@@ -1,5 +1,4 @@
 import { useDispatch } from 'react-redux';
-import { nanoid } from 'nanoid';
 import { Formik, Form, Field } from 'formik';
 import { useId } from 'react';
 import * as Yup from "yup";
@@ -9,53 +8,50 @@ import css from './ContactForm.module.css';
 
 const ContactForm = () => {
 
-const dispatch = useDispatch();
-const initValues = { name: '', number: '' };
-const fieldId = useId();  
-    
-    
-     const handleAddContact = (contact) => {
-    const newContact = {
-      id: nanoid(),
-      ...contact
-    };
-    dispatch(addContact(newContact));
-  }
- const handleSubmit = (values, {resetForm}) => {
-    handleAddContact(values);
-    resetForm();
+    const dispatch = useDispatch();
+    const initValues = { name: '', number: '' };
+    const fieldId = useId();  
+        
+        
+    const handleAddContact = (contact) => {
+        dispatch(addContact(contact));
+    }
+
+    const handleSubmit = (values, {resetForm}) => {
+        handleAddContact(values);
+        resetForm();
     };
 
     const FeedbackSchema = Yup.object().shape({
-        name: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required"),
-        number: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required"),
-   });
+            name: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required"),
+            number: Yup.string().min(3, "Too Short!").max(50, "Too Long!").required("Required"),
+    });
 
     return (
-    <Formik initialValues={initValues} onSubmit={handleSubmit} validationSchema={FeedbackSchema}>
-        <Form className={css.form}>
-                <label
-                    htmlFor={`${fieldId}-name`} className={css.label}>
-                    Name
-                </label>
-                <Field type="text" name="name" id={`${fieldId}-name`}
-                    className={css.input} />
-                 <ErrorMessage name="name" component="span" className={css.errorMessage}/>
-                <label
-                    htmlFor={ `${fieldId}-number`} className={css.label}>
-                    Number
-                </label>
-                <Field type="tel" name="number" id={`${fieldId}-number`}
-                    className={css.input} />
-                 <ErrorMessage name="number" component="span" className={css.errorMessage} />
-                <div className={css.buttonWrapper}>
-                    <button type='submit'
-                    className={css.button}>
-                        Add contact
-                    </button>
-                </div>
-      </Form>
-    </Formik>
+        <Formik initialValues={initValues} onSubmit={handleSubmit} validationSchema={FeedbackSchema}>
+            <Form className={css.form}>
+                    <label
+                        htmlFor={`${fieldId}-name`} className={css.label}>
+                        Name
+                    </label>
+                    <Field type="text" name="name" id={`${fieldId}-name`}
+                        className={css.input} />
+                    <ErrorMessage name="name" component="span" className={css.errorMessage}/>
+                    <label
+                        htmlFor={ `${fieldId}-number`} className={css.label}>
+                        Number
+                    </label>
+                    <Field type="tel" name="number" id={`${fieldId}-number`}
+                        className={css.input} />
+                    <ErrorMessage name="number" component="span" className={css.errorMessage} />
+                    <div className={css.buttonWrapper}>
+                        <button type='submit'
+                        className={css.button}>
+                            Add contact
+                        </button>
+                    </div>
+        </Form>
+        </Formik>
     )
 }
 
